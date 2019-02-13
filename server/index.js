@@ -4,14 +4,8 @@ const compress = require("compression");
 const path = require("path");
 const bodyParser = require("body-parser");
 var port = process.env.PORT || 9011;
-//const responseTime = require('response-time')
 
 const app = express();
-
-// client.on('error' (err) => {
-//   console.log(err);
-// });
-
 
 app.use(compress());
 app.use(bodyParser.urlencoded({ extended: true }));

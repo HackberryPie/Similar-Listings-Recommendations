@@ -1,7 +1,5 @@
-
+//Seeding function to test Postgres
 const { Pool, Client } = require('pg')
-// pools will use environment variables
-// for connection information
 const pool = new Pool();
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const csvWriter = createCsvWriter({
@@ -31,28 +29,6 @@ sqFootage VARCHAR(60) NOT NULL,
 imageUrl VARCHAR(60) NOT NULL
 )`;
 
-// var createTable =`
-// DROP TABLE IF EXISTS homes;
-// CREATE TABLE homes (
-// homeId INT NOT NULL,
-// address VARCHAR(60) NOT NULL,
-// city VARCHAR(60) NOT NULL,
-// price INT NOT NULL,
-// bedNum INT NOT NULL,
-// bathNum INT NOT NULL,
-// sqFootage INT NOT NULL,
-// imageUrl VARCHAR(60) NOT NULL
-// )`;
-
-// PRIMARY KEY (ID)
-
-  //var q = `
-  // select * from testTable;
-  // `;
-  // pool.query(createTable, (err, res) => {
-  //   console.log(err, res)
-  //   pool.end()
-  // })
 var create = () => {
   pool.query(createTable, (err, res) => {
     console.log(err, res)
@@ -74,7 +50,7 @@ var insertAllHomesPG = () => {
     homes.push(home);
     item++;
   }
-    csvWriter.writeRecords(homes)       // returns a promise
+    csvWriter.writeRecords(homes)
     .then(() => {
       if (currentBatch <= batchSize) {
          currentBatch++;
@@ -86,7 +62,6 @@ var insertAllHomesPG = () => {
         pool.query(q, (err, res) => {
           console.timeEnd('timer');
           console.log('end');
-          //console.log(err,res);
         });
       }
     })
@@ -95,33 +70,18 @@ var insertAllHomesPG = () => {
     })
  };
 
-
-// homes.forEach(h => {
-//     var q = `INSERT INTO homes(address, city, price, bednum, bathnum, sqFootage, imageURL)
-//     VALUES('${h.address}', '${h.city}', ${h.price}, ${h.bedNum}, ${h.bathNum}, ${h.sqFootage}, '${h.imageUrl}')`;
-//     pool.query(q, (err, res) => {
-//     });
-// });
-
-// if (currentBatch <= batchSize) {
-//   currentBatch++;
-//   insertAllHomesPG();
-// }
-
 var generateAddress = () => {
   return loremIpsum(2, 'words');
 }
 
-var generateHomeAttributes = (home, id, cities) => { //if loop loses data!!
+var generateHomeAttributes = (home, id, cities) => {
     return decorateLowTier(home, id, cities);
 };
 
 var decorateLowTier = (home, id, cities) => {
   home.homeId = id;
-  //home.address = faker.address.streetAddress();
   home.address = 'street ' + getRandomNumber(2,999);
   home.city = cities[getRandomNumber(0, 4)];
-  //home.price = getRandomNumber(250000, 500000);
   home.price = getRandomNumber(250000, 9990000);
   home.bedNum =  getRandomNumber(1, 5);
   home.bathNum =  getRandomNumber(1, home.bedNum);
@@ -135,8 +95,4 @@ var getRandomNumber = function(min, max) {
 };
 
 console.time('timer');
-//create();
 insertAllHomesPG();
-
-
-//module.exports = test;

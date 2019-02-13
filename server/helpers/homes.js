@@ -8,12 +8,10 @@ const connection = client.connect();
 
 const homes = {
   generateHomes: (id, callback) => {
-    var similarListings = homeHelpers.chooseSubsetIds(id); //returns an array of ids
+    var similarListings = homeHelpers.chooseSubsetIds(id);
     return homes.getHomes(id, similarListings, callback);
   },
   getHomes: (id, similarlistings, callback) => {
-    //var mongo = require('mongodb').MongoClient;
-    //var url = MONGO_URI;
     var similar = similarlistings;
     connect.then(() => {
       const db = client.db('homes');
@@ -26,23 +24,6 @@ const homes = {
         }
       });
     })
-    //old
-    // mongo.connect(url, (err, client) => {
-    //   if (err) {
-    //    console.error('error connecting to mongo')
-    //     return
-    //   }
-    //   //console.log('Mongo connected to localhost');
-    //   const db = client.db('homes');
-    //   const collection = db.collection('homes');
-      // collection.find({ homeId: { $in: similar } }).toArray(function(err,results) {
-      //   if (err) {
-      //     console.log('error finding similar homes');
-      //   } else {
-      //     callback(null, results);
-      //   }
-      // });
-    // });
   }
 };
 
